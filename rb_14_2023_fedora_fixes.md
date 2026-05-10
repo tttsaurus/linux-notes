@@ -212,7 +212,7 @@ acpi_osi=! acpi_osi=\"Windows 2020\"
 ```
 
 **Optional**:
-- Add `processor.max_cstate=5`
+- Add `processor.max_cstate=5` (force performance mode)
 - Add `pcie_aspm=off`
 
 Finally, run `sudo grub2-mkconfig -o /boot/grub2/grub.cfg` to regenerate config.
