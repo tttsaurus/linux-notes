@@ -7,4 +7,3 @@ Add keybind (for Wayland: use `QT_QPA_PLATFORM=xcb` to bypass Wayland restrictio
 ```
 env QT_QPA_PLATFORM=xcb flameshot gui
 ```
-

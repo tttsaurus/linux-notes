@@ -1,10 +1,86 @@
 # RazerBlade 14 (2023) General Fedora (44) Fix
 
+Minimal Setup
+- Fix critical issues
+- Update
+  ```bash
+  sudo dnf update
+  ```
+- Install nvidia driver
+  ```bash
+  sudo dnf install akmod-nvidia
+  ```
+
+## System Freeze
+<details>
+<summary>Click to Expand</summary>
+
+- **Issue**: Random system pauses/freezes
+- **Fix**: Modify GRUB config to pretend to be Windows (RazerBlade motherboard specializes on Windows)
+
+```
+sudo nano /etc/default/grub
+```
+
+Append the parameters below to `GRUB_CMDLINE_LINUX="..."`
+```
+acpi_osi=! acpi_osi=\"Windows 2020\"
+```
+
+**Optional**:
+- Add `processor.max_cstate=5` (force performance mode)
+- Add `pcie_aspm=off`
+
+Finally, run `sudo grub2-mkconfig -o /boot/grub2/grub.cfg` to regenerate config.
+
+</details>
+
+## Hibernation Issue
+<details>
+<summary>Click to Expand</summary>
+
+- **Issue**: Hibernation/Suspend causes system freeze
+- **Fix**: Totally disable Hibernation/Suspend
+
+Goto `Gnome Settings` -> Disable Automatic Suspend
+
+Disable hibernation related services (use `unmask` instead of `mask` to revert these changes)
+```bash
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+```
+
+Disable lid close suspend
+```bash
+sudo nano /etc/systemd/logind.conf
+```
+```
+HandleLidSwitch=ignore
+HandleLidSwitchExternalPower=ignore
+```
+
+Add GRUB confid parameters (regen config afterward!):
+- `nvme.noacpi=1`
+- `nvme_core.default_ps_max_latency_us=0`
+
+```bash
+reboot
+```
+
+</details>
+
 ## Speaker
+<details>
+<summary>Click to Expand</summary>
+
 - **Issue**: Built-in speaker not working
 - **Fix**: [See `rb14-2023-audio-fix` for details](https://github.com/yadu-tv/rb14-2023-audio-fix/)
 
+</details>
+
 ## WiFi
+<details>
+<summary>Click to Expand (Ignore This Part If WiFi Is Working Properly)</summary>
+
 - **Issue**: Qualcomm WiFi6 not working well with Linux + RX aggregation issue (randomly experiencing low speed WiFi)
 - **Fix**: Disable WiFi6 (ax) + Auto WiFi reconnect on startup 
 
@@ -202,18 +278,4 @@ sudo systemctl enable --now fix-wifi.timer
 
 Check `sudo systemctl status fix-wifi.timer`. Expected to see `Active: active (running)`
 
-## System Freeze
-- **Issue**: Random system pause/freeze
-- **Fix**: Modify GRUB config to pretend to be Windows (RazerBlade motherboard specializes on Windows)
-
-Append the parameters below to `GRUB_CMDLINE_LINUX="..."`
-```
-acpi_osi=! acpi_osi=\"Windows 2020\"
-```
-
-**Optional**:
-- Add `processor.max_cstate=5` (force performance mode)
-- Add `pcie_aspm=off`
-
-Finally, run `sudo grub2-mkconfig -o /boot/grub2/grub.cfg` to regenerate config.
-
+</details>
