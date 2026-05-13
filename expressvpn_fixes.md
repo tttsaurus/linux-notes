@@ -4,6 +4,10 @@ Here's a temporary workaround to fix the connection. (Not necessarily/guaranteed
 
 Run the script when ExpressVPN is connected but the connection hangs.
 
+Be sure that:
+- Protocol is Lightway TCP
+- Kill switch is off
+
 ```bash
 #!/usr/bin/env bash
 
