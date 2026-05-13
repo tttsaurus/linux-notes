@@ -21,21 +21,21 @@ echo "Killing ExpressVPN processes..."
 
 if pgrep -f expressvpn-lightway >/dev/null; then
     echo "  -> Killing expressvpn-lightway"
-    pkill -f expressvpn-lightway
+    sudo pkill -f expressvpn-lightway
 else
     echo "  -> expressvpn-lightway is NOT running"
 fi
 
 if pgrep -f expressvpn-lightway-rs >/dev/null; then
     echo "  -> Killing expressvpn-lightway-rs"
-    pkill -f expressvpn-lightway-rs
+    sudo pkill -f expressvpn-lightway-rs
 else
     echo "  -> expressvpn-lightway-rs is NOT running"
 fi
 
 if pgrep -f expressvpn-daemon >/dev/null; then
     echo "  -> Killing expressvpn-daemon"
-    pkill -f expressvpn-daemon
+    sudo pkill -f expressvpn-daemon
 else
     echo "  -> expressvpn-daemon is NOT running"
 fi
@@ -95,3 +95,5 @@ echo
 echo "Current rules:"
 ip rule
 ```
+
+Reboot if ExpressVPN seems to not work afterward.

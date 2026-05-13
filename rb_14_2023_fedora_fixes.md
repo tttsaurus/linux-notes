@@ -11,6 +11,11 @@ Minimal Setup
   sudo dnf install akmod-nvidia
   ```
 
+## BIOS
+- Enable Dedicated GPU Only
+- Disable Secure Boot
+- Disable Fast Boot
+
 ## System Freeze
 <details>
 <summary>Click to Expand</summary>
@@ -44,6 +49,10 @@ Finally, run `sudo grub2-mkconfig -o /boot/grub2/grub.cfg` to regenerate config.
 
 Goto `Gnome Settings` -> Disable Automatic Suspend
 
+```bash
+gsettings set org.gnome.desktop.session idle-delay 0
+```
+
 Disable hibernation related services (use `unmask` instead of `mask` to revert these changes)
 ```bash
 sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
@@ -59,8 +68,7 @@ HandleLidSwitchExternalPower=ignore
 ```
 
 Add GRUB confid parameters (regen config afterward!):
-- `nvme.noacpi=1`
-- `nvme_core.default_ps_max_latency_us=0`
+- `nvme_core.default_ps_max_latency_us=0` (disable SSD powersafe)
 
 ```bash
 reboot
