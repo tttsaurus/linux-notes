@@ -1,14 +1,29 @@
-# RazerBlade 14 (2023) General Fedora (44) Fix
+# RazerBlade 14 (2023) General Fedora (44) Fixes
 
-Minimal Setup
-- Fix critical issues
-- Update
+Fedora (44) Installation Guide (Minimal Setup)
+- Update packages
   ```bash
   sudo dnf update
   ```
+- Fix critical issues: _Speaker_, _System Freeze_, _Hibernation_ etc.
 - Install nvidia driver
   ```bash
-  sudo dnf install akmod-nvidia
+  sudo dnf install kernel-devel-$(uname -r)
+  sudo dnf install kernel-headers gcc make
+  sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda
+  ```
+  **Manually fix GRUB config**: add back escape characters -> regen config<br><br>
+  (It'd be the best to switch to TTY to compile the driver)<br><br>
+  **Switch to TTY**: reboot -> press `e` in the boot menu -> append 
+  `system.unit=multi-user.target` to CMD Linux -> `Ctrl x` to boot
+  ```bash
+  sudo akmods --force
+  sudo dracut --force
+  reboot
+  ```
+  Boot the normal graphics environment. Check installation
+  ```bash
+  nvidia-smi
   ```
 
 ## BIOS
@@ -38,13 +53,16 @@ acpi_osi=! acpi_osi=\"Windows 2020\"
 
 Finally, run `sudo grub2-mkconfig -o /boot/grub2/grub.cfg` to regenerate config.
 
+> Note:
+> `sudo dnf install akmod-nvidia` will modify GRUB config and remove `\` from `\"Windows 2020\"`. Requires a manual fix here.
+
 </details>
 
-## Hibernation Issue
+## Hibernation
 <details>
 <summary>Click to Expand</summary>
 
-- **Issue**: Hibernation/Suspend causes system freeze
+- **Issue**: Hibernation/Suspend causes system freeze and occasional black screen
 - **Fix**: Totally disable Hibernation/Suspend
 
 Goto `Gnome Settings` -> Disable Automatic Suspend
