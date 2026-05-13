@@ -48,12 +48,27 @@ echo "Removing stale policy routing..."
 RULES=$(sudo ip rule | grep evpnFwdrt || true)
 
 if [ -z "$RULES" ]; then
-    echo "  -> No stale ExpressVPN rules found"
+    echo "  -> No stale evpnFwdrt rules found"
 else
     while IFS= read -r RULE; do
         PREF=$(echo "$RULE" | cut -d: -f1 | tr -d ' ')
 
-        echo "  -> Removing rule priority $PREF"
+        echo "  -> Removing evpnFwdrt rule priority $PREF"
+        echo "     $RULE"
+
+        sudo ip rule del priority "$PREF"
+    done <<< "$RULES"
+fi
+
+RULES=$(sudo ip rule | grep "suppress_prefixlength 1" || true)
+
+if [ -z "$RULES" ]; then
+    echo "  -> No stale suppress_prefixlength rules found"
+else
+    while IFS= read -r RULE; do
+        PREF=$(echo "$RULE" | cut -d: -f1 | tr -d ' ')
+
+        echo "  -> Removing suppress rule priority $PREF"
         echo "     $RULE"
 
         sudo ip rule del priority "$PREF"
@@ -82,10 +97,8 @@ else
     echo "  -> No tun0 interface found"
 fi
 
-sleep 1
-
 echo
-echo "Done."
+echo "Done. Wait for ExpressVPN to reconnect and reconfigure itself"
 echo
 
 echo "Current routing:"
@@ -94,6 +107,7 @@ ip route
 echo
 echo "Current rules:"
 ip rule
+
 ```
 
-Reboot if ExpressVPN seems to not work afterward.
+Reboot if ExpressVPN seems to not work after all.

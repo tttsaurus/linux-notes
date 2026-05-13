@@ -5,7 +5,7 @@ Fedora (44) Installation Guide (Minimal Setup)
   ```bash
   sudo dnf update
   ```
-- Fix critical issues: _Speaker_, _System Freeze_, _Hibernation_ etc.
+- Fix critical issues: _BIOS_, _Speaker_, _System Freeze_, _Hibernation_ etc.
 - Install nvidia driver
   ```bash
   sudo dnf install kernel-devel-$(uname -r)
@@ -65,7 +65,7 @@ Finally, run `sudo grub2-mkconfig -o /boot/grub2/grub.cfg` to regenerate config.
 - **Issue**: Hibernation/Suspend causes system freeze and occasional black screen
 - **Fix**: Totally disable Hibernation/Suspend
 
-Goto `Gnome Settings` -> Disable Automatic Suspend
+Goto `Gnome Settings` -> Power -> Disable Automatic Suspend
 
 ```bash
 gsettings set org.gnome.desktop.session idle-delay 0
