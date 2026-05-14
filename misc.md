@@ -28,7 +28,7 @@ StartupWMClass=zen
 MimeType=text/html;text/xml;application/xhtml+xml;x-scheme-handler/http;x-scheme-handler/https;
 ```
 
-Parameters like `Terminal=false StartupNotify=true ...` prevent users to accidentally open multiple windows with one click.
+Parameters like `Terminal=false StartupNotify=true ...` prevent users to accidentally open multiple windows at once.
 
 ```bash
 update-desktop-database ~/.local/share/applications
@@ -78,3 +78,30 @@ sudo grub2-set-default "Fedora ..."
   ```bash
   sudo dnf install fuse fuse-libs
   ```
+
+# Set `JAVA_HOME` and `PATH`
+```bash
+#!/usr/bin/env bash
+
+echo "Available Java installations:"
+echo
+
+ls /usr/lib/jvm/
+
+echo
+read -p "Enter JDK directory name: " JDK_NAME
+
+echo
+echo "Setting JAVA_HOME and updating PATH..."
+
+export JAVA_HOME="/usr/lib/jvm/$JDK_NAME"
+export PATH="$JAVA_HOME/bin:$PATH"
+
+echo
+echo "JAVA_HOME set to:"
+echo "$JAVA_HOME"
+
+echo
+java -version
+javac -version
+```
