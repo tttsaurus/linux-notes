@@ -91,10 +91,17 @@ ls /usr/lib/jvm/
 echo
 read -p "Enter JDK directory name: " JDK_NAME
 
+JDK_PATH="/usr/lib/jvm/$JDK_NAME"
+
+if [ ! -d "$JDK_PATH" ]; then
+    echo "JDK not found!"
+    exit 1
+fi
+
 echo
 echo "Setting JAVA_HOME and updating PATH..."
 
-export JAVA_HOME="/usr/lib/jvm/$JDK_NAME"
+export JAVA_HOME="$JDK_PATH"
 export PATH="$JAVA_HOME/bin:$PATH"
 
 echo
@@ -104,4 +111,21 @@ echo "$JAVA_HOME"
 echo
 java -version
 javac -version
+
+sed -i '/JAVA_HOME/d' ~/.bashrc
+sed -i '/\$JAVA_HOME\/bin/d' ~/.bashrc
+
+echo "export JAVA_HOME=\"$JDK_PATH\"" >> ~/.bashrc
+echo 'export PATH="$JAVA_HOME/bin:$PATH"' >> ~/.bashrc
+
+echo
+echo "Saved to ~/.bashrc"
+echo "Open a new terminal or run:"
+echo "source ~/.bashrc"
+```
+```bash
+sudo chmod +x set_java.sh
+```
+```bash
+source ./set_java.sh
 ```
