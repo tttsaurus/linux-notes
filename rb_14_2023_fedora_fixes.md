@@ -99,7 +99,51 @@ reboot
 <summary>Click to Expand</summary>
 
 - **Issue**: Built-in speaker not working
-- **Fix**: [See `rb14-2023-audio-fix` for details](https://github.com/yadu-tv/rb14-2023-audio-fix/)
+- **Fix**: [See `rb14-2023-audio-fix` for details](https://github.com/yadu-tv/rb14-2023-audio-fix/) (licensed under MIT)
+
+```bash
+sudo dnf install alsa-tools
+```
+Download `rb_audio.sh` and grant access
+```bash
+sudo chmod a+x ~/Downloads/rb_audio.sh
+```
+```bash
+sudo mv ~/Downloads/rb_audio.sh /usr/bin/
+```
+Create the startup service
+```bash
+sudo nano /etc/systemd/system/rb_audio.service
+```
+```
+[Unit]
+Description=Razer Blade 14 audio fix 
+
+[Service]
+ExecStart=/bin/bash /usr/bin/rb_audio.sh
+
+[Install]
+WantedBy=multi-user.target 
+```
+```bash
+sudo systemctl enable rb_audio.service
+```
+```bash
+reboot
+```
+
+</details>
+
+## Wired Earphones
+<details>
+<summary>Click to Expand</summary>
+
+- **Issue**: The system occasionally not recognizing the wired earphones
+- **Fix**:
+  ```bash
+  systemctl --user restart wireplumber
+  systemctl --user restart pipewire
+  ```
 
 </details>
 
@@ -303,5 +347,32 @@ sudo systemctl enable --now fix-wifi.timer
 ```
 
 Check `sudo systemctl status fix-wifi.timer`. Expected to see `Active: active (running)`
+
+</details>
+
+## Touchpad Scroll Sensitivity
+<details>
+<summary>Click to Expand</summary>
+
+- **Issue**: Touchpad scrolling speed is too high
+- **Fix**: [See `touchpad-sensitivity-tweak` for details](https://github.com/shivasai573/touchpad-sensitivity-tweak) (licensed under MIT)
+
+```bash
+git clone https://github.com/shivasai573/touchpad-sensitivity-tweak.git
+cd touchpad-sensitivity-tweak
+```
+```bash
+chmod +x scripts/install_fix.sh
+```
+Be sure that `touchegg` is not installed
+```bash
+sudo dnf remove touchegg
+```
+```bash
+sudo ./scripts/install_fix.sh
+```
+```bash
+reboot
+```
 
 </details>

@@ -1,3 +1,5 @@
+Under Gnome 50
+
 - **AppIndicator and KStatusNotifierItem Support**<br>
   _appindicatorsupport@rgcjonas.gmail.com_
 - **Blur my Shell**<br>
@@ -12,3 +14,5 @@
   _SpeedBuzz@hridoybuzz.dev_
 - **Spotify Controls + Track Info**<br>
   _spotify-controls@Sonath21_
+- **App Hider**<br>
+  _app-hider@lynith.dev_
