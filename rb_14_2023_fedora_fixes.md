@@ -1,21 +1,27 @@
 # RazerBlade 14 (2023) General Fedora (44) Fixes
 
-Fedora (44) Installation Guide (Minimal Setup)
+Fedora (44 - `kernel-6.19.10-300.fc44`) Installation Guide On RazerBlade (Minimal Setup)
 - Update packages
   ```bash
   sudo dnf update
   ```
-- Fix critical issues: _BIOS_, _Speaker_, _System Freeze_, _Hibernation_ etc.
-- Install nvidia driver
+- Fix critical issues: _BIOS_, _Speaker_, _System Freeze_, _Hibernation_ etc. (See sections below for details)
+- Install the nvidia driver
   ```bash
   sudo dnf install kernel-devel-$(uname -r)
   sudo dnf install kernel-headers gcc make
   sudo dnf install akmod-nvidia xorg-x11-drv-nvidia-cuda
   ```
-  **Manually fix GRUB config**: add back escape characters -> regen config<br><br>
-  (It'd be the best to switch to TTY to compile the driver)<br><br>
-  **Switch to TTY**: reboot -> press `e` in the boot menu -> append 
-  `system.unit=multi-user.target` to CMD Linux -> `Ctrl x` to boot
+  **Manually fix GRUB config**: add back escape characters → regen config
+  > Note:
+  > `sudo dnf install akmod-nvidia` will modify GRUB config and remove `\` from `\"Windows 2020\"`. Requires a manual fix here.
+
+  <br>
+  (It'd be the best to switch to TTY to compile the driver)
+  <br><br>
+
+  **Switch to TTY**: reboot → press `e` in the boot menu → append 
+  `system.unit=multi-user.target` to CMD Linux → `Ctrl x` to boot
   ```bash
   sudo akmods --force
   sudo dracut --force
@@ -65,7 +71,7 @@ Finally, run `sudo grub2-mkconfig -o /boot/grub2/grub.cfg` to regenerate config.
 - **Issue**: Hibernation/Suspend causes system freeze and occasional black screen
 - **Fix**: Totally disable Hibernation/Suspend
 
-Goto `Gnome Settings` -> Power -> Disable Automatic Suspend
+Goto `Gnome Settings` → Power → Disable Automatic Suspend
 
 ```bash
 gsettings set org.gnome.desktop.session idle-delay 0
@@ -373,6 +379,49 @@ sudo ./scripts/install_fix.sh
 ```
 ```bash
 reboot
+```
+
+</details>
+
+## Version Lock
+<details>
+<summary>Click to Expand</summary>
+
+- **Why**: Gaming laptop firmware may experience issues with newer kernels
+
+```bash
+sudo dnf install 'dnf-command(versionlock)'
+```
+```bash
+sudo dnf versionlock add kernel-6.19.10-300.fc44
+
+# OR
+
+sudo dnf versionlock add kernel
+```
+
+Check your version lock list
+```bash
+sudo dnf versionlock list
+```
+
+Disable gnome background auto update download
+```bash
+gsettings set org.gnome.software download-updates false
+```
+
+Prevent gnome software to show updates (`unmask` to revert)
+```
+sudo systemctl mask packagekit
+```
+
+Extend kernel history entry count (default is 3)
+```bash
+sudo nano /etc/dnf/dnf.conf
+```
+```
+[main]
+installonly_limit=5
 ```
 
 </details>
