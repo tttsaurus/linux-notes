@@ -16,3 +16,11 @@ Under Gnome 50
   _spotify-controls@Sonath21_
 - **App Hider**<br>
   _app-hider@lynith.dev_
+- **Burn My Windows**<br>
+  _burn-my-windows@schneegans.github.com_
+- **Freon**<br>
+  _freon@UshakovVasilii_Github.yahoo.com_
+- **Rounded Window Corners Reborn**<br>
+  _rounded-window-corners@fxgn_
+- **Gtk4 Desktop Icons NG (DING)**<br>
+  _gtk4-ding@smedius.gitlab.com_

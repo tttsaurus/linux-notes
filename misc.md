@@ -129,3 +129,10 @@ sudo chmod +x set_java.sh
 ```bash
 source ./set_java.sh
 ```
+
+# Install Node Version Manager `nvm`, And `npm`
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+source ~/.bashrc
+nvm install --lts
+```
